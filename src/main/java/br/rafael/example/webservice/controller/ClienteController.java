@@ -10,16 +10,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.List;
 
-@RestController
-@RequestMapping("/cliente")
+@Controller
+@RequestMapping(value = "/clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<Cliente>> getAllClientes(){
         List<Cliente> lista = this.clienteService.buscarTodos();
         return new ResponseEntity<List<Cliente>>(lista, HttpStatus.ACCEPTED);

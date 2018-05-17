@@ -2,16 +2,16 @@ package br.rafael.example.webservice.domain;
 
 public class Cliente {
 
-    private String name;
+    private String nome;
 
     private String cpf;
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getCpf() {
