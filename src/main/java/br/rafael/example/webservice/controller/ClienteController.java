@@ -2,12 +2,11 @@ package br.rafael.example.webservice.controller;
 
 
 import br.rafael.example.webservice.domain.Cliente;
-import br.rafael.example.webservice.exception.ClienteNaoEncontradoException;
+import br.rafael.example.webservice.exception.ClienteJaCadastradoException;
+import br.rafael.example.webservice.exception.ClienteNaoEncontadoException;
 import br.rafael.example.webservice.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -43,12 +42,12 @@ public class ClienteController {
      * Retorna o respectivo cliente pelo cpf
      * @param cpf
      * @return cliente
-     * @throws ClienteNaoEncontradoException
+     * @throws ClienteNaoEncontadoException
      */
     @GetMapping("/{cpf}")
     @ResponseStatus(value = HttpStatus.OK)
     public Cliente getClientePorCpf(@PathVariable("cpf") String cpf)
-            throws ClienteNaoEncontradoException {
+            throws ClienteNaoEncontadoException {
 
         Cliente cliente = this.clienteService.buscarPeloCpf(cpf);
         return cliente;
@@ -61,7 +60,9 @@ public class ClienteController {
      */
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void salvarCliente(@Valid @NotNull @RequestBody Cliente cliente){
+    public void salvarCliente(@Valid @NotNull @RequestBody Cliente cliente)
+            throws ClienteJaCadastradoException {
+
         this.clienteService.salvarCliente(cliente);
     }
 
