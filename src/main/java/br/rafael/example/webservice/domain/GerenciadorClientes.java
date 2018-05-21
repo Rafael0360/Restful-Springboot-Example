@@ -24,7 +24,7 @@ public class GerenciadorClientes {
 
     public Cliente getClientePorCpf(String cpf){
         for(Cliente c : this.clientes){
-            if(c.getCpf().equals(cpf)){
+            if(c != null && c.getCpf().equals(cpf)){
                 return c;
             }
         }

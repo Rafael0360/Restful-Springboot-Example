@@ -2,6 +2,7 @@ package br.rafael.example.webservice.controller;
 
 
 import br.rafael.example.webservice.domain.Cliente;
+import br.rafael.example.webservice.exception.ClienteNaoEncontradoException;
 import br.rafael.example.webservice.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,31 +12,57 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Controller
+/**
+ * Classe para mapear end-points
+ */
+@RestController
 @RequestMapping(value = "/clientes")
 public class ClienteController {
 
+    /**
+     * Injeção do service ClienteService
+     */
     @Autowired
     private ClienteService clienteService;
 
+    /**
+     * retorna todos os clientes
+     * @return lista de clientes
+     */
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAllClientes(){
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Cliente> getAllClientes(){
         List<Cliente> lista = this.clienteService.buscarTodos();
-        return new ResponseEntity<List<Cliente>>(lista, HttpStatus.ACCEPTED);
+        return lista;
     }
 
+    /**
+     * Retorna o respectivo cliente pelo cpf
+     * @param cpf
+     * @return cliente
+     * @throws ClienteNaoEncontradoException
+     */
     @GetMapping("/{cpf}")
-    public ResponseEntity<Cliente> getClientePorCpf(@PathVariable("cpf") String cpf){
+    @ResponseStatus(value = HttpStatus.OK)
+    public Cliente getClientePorCpf(@PathVariable("cpf") String cpf)
+            throws ClienteNaoEncontradoException {
+
         Cliente cliente = this.clienteService.buscarPeloCpf(cpf);
-        return new ResponseEntity<Cliente>(cliente, HttpStatus.ACCEPTED);
+        return cliente;
     }
 
+    /**
+     * Adiciona um novo cliente
+     * @param cliente
+     * @return
+     */
     @PostMapping
-    public ResponseEntity salvarCliente(Cliente cliente){
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void salvarCliente(@Valid @NotNull @RequestBody Cliente cliente){
         this.clienteService.salvarCliente(cliente);
-        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 }
